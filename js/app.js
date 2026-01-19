@@ -26,13 +26,14 @@ function setUsuario(){
         }),
         success: function(response){
             console.log("función hecha", response)
+            document.getElementById("nombre").value = "";
+            document.getElementById("apellidos").value = "";
             getUsuarios();
         },
         error: function(e){
             console.error(e);
         }
     })
-    
 }
 
 
