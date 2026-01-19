@@ -17,8 +17,23 @@
             <label for="apellidos" class="form-label">Apellidos</label>
             <input type="text" name="apellidos" id="apellidos">
             <div class="mt-2 align-self-end">
-                <button onclick="setUsuario()" class="btn btn-primary d-flex">Agregar por defecto</button>
+                <button onclick="addUsuario()" class="btn btn-primary d-flex">Agregar</button>
             </div>
+        </div>
+        <div class="card mt-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Apellidos</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="bodyTable">
+                    
+                </tbody>
+            </table>
         </div>
     </div>
 

@@ -10,7 +10,7 @@ class Ecommerce
         $this->mypos_id = $_COOKIE['mypos_id'] ?? '';
     }
 
-    public function getCustomer()
+    public function getCustomer(): array
     {
         $json = [];
         try {
@@ -23,7 +23,7 @@ class Ecommerce
             }
             
             $pdo = Database::getConnection();
-            $stmt = $pdo->prepare("SELECT id, nombre, apellidos FROM pos WHERE mypos_id = ?");
+            $stmt = $pdo->prepare("SELECT id, nombre, apellidos FROM pos WHERE mypos_id = ? ORDER BY id");
             $stmt->execute([$this->mypos_id]);
             $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -43,7 +43,7 @@ class Ecommerce
         }
     }
 
-    public function setCustomer(){
+    public function setCustomer(): array{
         $json = [];
         try {
             if($this->mypos_id == ''){
@@ -83,6 +83,51 @@ class Ecommerce
             $json["status"] = "error";
             $json["code"] = 500;
             $json["answer"] = "client - " . $e->getCode();
+            return $json;
+        }
+    }
+
+    public function updateCustomer(): array{
+        $json = [];
+
+        try{
+            if ($this->mypos_id == "") {
+                http_response_code(404);
+                $json["status"] = "error";
+                $json["answer"] = "No hay mypos_id";
+                $json["code"] = 404;
+                return $json;
+            }
+            $input = json_decode(file_get_contents('php://input'), true);
+
+            if (!$input || !isset($input['nombre']) || !isset($input['apellidos']) || empty(trim($input['nombre'])) || empty(trim($input['apellidos']))) {
+                http_response_code(400);
+                $json["status"] = "error";
+                $json["code"] = 400;
+                $json["answer"] = "Nombre y apellidos son requeridos y no pueden estar vacíos";
+                return $json;
+            }
+
+            $pdo = Database::getConnection();
+            $stmt = $pdo->prepare("UPDATE pos SET nombre = ?, apellidos = ? WHERE id = ? AND mypos_id = ?");
+            $result = $stmt->execute([
+                $input["nombre"],
+                $input["apellidos"],
+                $input["id"],
+                $this->mypos_id
+            ]);
+
+            http_response_code(201);
+            $json["status"] = "ok";
+            $json["answer"] = "Usuario actualizado";
+            $json["code"] = 201;
+            return $json;
+
+        } catch (Exception $e){
+            http_response_code(500);
+            $json["answer"] = "client - " . $e->getCode();
+            $json["code"] = 500;
+            $json["status"] = "error";
             return $json;
         }
     }
