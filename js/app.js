@@ -1,6 +1,6 @@
 function getUsuarios(){
     $.ajax({
-        url: "../php/getUsuarios",
+        url: "../php/getUsuarios.php",
         type: "GET",
         contentType: "application/json",
         success: function(response){
@@ -10,4 +10,8 @@ function getUsuarios(){
             console.error(e);
         }
     })
+    
 }
+
+
+getUsuarios()
