@@ -1,6 +1,6 @@
 function getUsuarios(){
     $.ajax({
-        url: "../php/getUsuarios.php",
+        url: "../php/getCustomers.php",
         type: "GET",
         contentType: 'application/json', 
         success: function(response){
@@ -15,7 +15,7 @@ function getUsuarios(){
 
 function setUsuario(){
     $.ajax({
-        url: "../php/setUsuario.php",
+        url: "../php/setCustomer.php",
         type: "POST",
         contentType: 'application/json',
         data: JSON.stringify({

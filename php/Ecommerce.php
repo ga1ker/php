@@ -10,83 +10,80 @@ class Ecommerce
         $this->mypos_id = $_COOKIE['mypos_id'] ?? '';
     }
 
-    public function getUsuarios()
+    public function getCustomer()
     {
+        $json = [];
         try {
             if($this->mypos_id == ''){
                 http_response_code(404);
-                print(json_encode([
-                    "message" => "No hay mypos_id",
-                    "status" => 404
-                ]));
-                return;
+                $json["status"] = "error";
+                $json["code"] = 404;
+                $json["answer"] = "No hay mypos_id";
+                return $json;
             }
+            
             $pdo = Database::getConnection();
-
             $stmt = $pdo->prepare("SELECT id, nombre, apellidos FROM pos WHERE mypos_id = ?");
             $stmt->execute([$this->mypos_id]);
-            $usuarios = $stmt->fetchAll();
+            $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             http_response_code(200);
-            echo json_encode([
-                "status" => 200,
-                "message" => "Usuarios obtenidos correctamente",
-                "data" => $usuarios
-            ]);
+            $json["status"] = "ok";
+            $json["code"] = 200;
+            $json["answer"] = "Usuarios obtenidos correctamente";
+            $json["usuarios"] = $usuarios;
+            return $json;
 
         } catch (Exception $e) {
             http_response_code(500);
-            print(json_encode([
-                "status" => 500,
-                "message" => "Error al obtener usuarios"
-            ]));
+            $json["status"] = "error";
+            $json["code"] = 500;
+            $json["answer"] = "Error del servidor: " . $e->getMessage();
+            return $json;
         }
     }
 
-    public function setUsuario(){
+    public function setCustomer(){
+        $json = [];
         try {
             if($this->mypos_id == ''){
                 http_response_code(404);
-                print(json_encode([
-                    "message" => "No hay mypos_id",
-                    "status" => 404
-                ]));
-                return;
+                $json["status"] = "error";
+                $json["code"] = 404;
+                $json["answer"] = "No hay mypos_id";
+                return $json;
             }
+            
             $input = json_decode(file_get_contents('php://input'), true);
             
-            if (!$input || !isset($input['nombre']) || !isset($input['apellidos'])) {
+            if (!$input || !isset($input['nombre']) || !isset($input['apellidos']) || empty(trim($input['nombre'])) || empty(trim($input['apellidos']))) {
                 http_response_code(400);
-                print(json_encode([
-                    "status" => 400,
-                    "message" => "Nombre y apellidos son requeridos"
-                ]));
-                return;
+                $json["status"] = "error";
+                $json["code"] = 400;
+                $json["answer"] = "Nombre y apellidos son requeridos y no pueden estar vacíos";
+                return $json;
             }
 
             $pdo = Database::getConnection();
-            
-            $stmt = $pdo->prepare("INSERT INTO pos (mypos_id, nombre, apellidos) VALUES (?, ?, ?) ON CONFLICT (mypos_id, id) DO NOTHING");
+            $stmt = $pdo->prepare("INSERT INTO pos (mypos_id, nombre, apellidos) VALUES (?, ?, ?) ON CONFLICT (mypos_id) DO UPDATE SET nombre = EXCLUDED.nombre, apellidos = EXCLUDED.apellidos");
             $result = $stmt->execute([
                 $this->mypos_id,
-                $input['nombre'],
-                $input['apellidos']
+                trim($input['nombre']),
+                trim($input['apellidos'])
             ]);
 
             http_response_code(201);
-            print(json_encode([
-                "status" => 201,
-                "message" => "Usuario creado correctamente",
-                "data" => ["mypos_id" => $this->mypos_id]
-            ]));
+            $json["status"] = "ok";
+            $json["code"] = 201;
+            $json["answer"] = "Usuario creado/actualizado correctamente";
+            return $json;
 
         } catch (Exception $e) {
             http_response_code(500);
-            print(json_encode([
-                "status" => 500,
-                "message" => "Error: " . $e->getMessage()
-            ]));
+            $json["status"] = "error";
+            $json["code"] = 500;
+            $json["answer"] = "Error del servidor";
+            return $json;
         }
     }
-
 }
