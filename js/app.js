@@ -14,13 +14,15 @@ function getUsuarios(){
 }
 
 function setUsuario(){
+    const nombre = document.getElementById("nombre").value
+    const apellidos = document.getElementById("apellidos").value
     $.ajax({
         url: "../php/setCustomer.php",
         type: "POST",
         contentType: 'application/json',
         data: JSON.stringify({
-            "nombre": "Gadiel",
-            "apellidos": "Alcazaer bernasl"
+            "nombre": nombre,
+            "apellidos": apellidos
         }),
         success: function(response){
             console.log("función hecha", response)

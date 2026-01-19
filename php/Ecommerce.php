@@ -65,7 +65,7 @@ class Ecommerce
             }
 
             $pdo = Database::getConnection();
-            $stmt = $pdo->prepare("INSERT INTO pos (mypos_id, nombre, apellidos) VALUES (?, ?, ?) ON CONFLICT (mypos_id) DO UPDATE SET nombre = EXCLUDED.nombre, apellidos = EXCLUDED.apellidos");
+            $stmt = $pdo->prepare("INSERT INTO pos (mypos_id, nombre, apellidos) VALUES (?, ?, ?)");
             $result = $stmt->execute([
                 $this->mypos_id,
                 trim($input['nombre']),
@@ -75,14 +75,14 @@ class Ecommerce
             http_response_code(201);
             $json["status"] = "ok";
             $json["code"] = 201;
-            $json["answer"] = "Usuario creado/actualizado correctamente";
+            $json["answer"] = "Usuario creado correctamente";
             return $json;
 
         } catch (Exception $e) {
             http_response_code(500);
             $json["status"] = "error";
             $json["code"] = 500;
-            $json["answer"] = "Error del servidor";
+            $json["answer"] = "client - " . $e->getCode();
             return $json;
         }
     }
