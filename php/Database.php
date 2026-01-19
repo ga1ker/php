@@ -1,10 +1,5 @@
 <?php
 
-namespace App\Core;
-
-use PDO;
-use PDOException;
-
 class Database
 {
     private static ?PDO $connection = null;
@@ -12,11 +7,10 @@ class Database
     public static function getConnection(): PDO
     {
         if (self::$connection === null) {
-            $config = require __DIR__ . '/../../config/database.php';
+            $config = require __DIR__ . '/config/database.php';
 
             $dsn = sprintf(
-                '%s:host=%s;port=%d;dbname=%s;charset=%s',
-                $config['driver'],
+                'pgsql:host=%s;port=%d;dbname=%s;sslmode=require;channel_binding=require;',
                 $config['host'],
                 $config['port'],
                 $config['dbname'],
@@ -31,7 +25,7 @@ class Database
                 ]);
             } catch (PDOException $e) {
                 http_response_code(500);
-                echo json_encode(['error' => 'Database connection failed']);
+                echo json_encode(['error' => 'Database connection failed: ' . $e->getMessage()]);
                 exit;
             }
         }
