@@ -1,7 +1,7 @@
 function getUsuarios(){
     const contenedorTabla = document.getElementById("bodyTable");
     $.ajax({
-        url: "../php/getCustomers.php",
+        url: "../php/getCustomer",
         type: "GET",
         contentType: 'application/json', 
         success: function(response){
@@ -59,7 +59,7 @@ function addUsuario(){
     const nombre = document.getElementById("nombre").value
     const apellidos = document.getElementById("apellidos").value
     $.ajax({
-        url: "../php/setCustomer.php",
+        url: "../php/setCustomer",
         type: "POST",
         contentType: 'application/json',
         data: JSON.stringify({
@@ -83,7 +83,7 @@ function updateUsuario (id){
     const apellidosAct = document.getElementById("apellidosAct-" + id).value
 
     $.ajax({
-        url: "../php/updateCustomer.php",
+        url: "../php/updateCustomer",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({
