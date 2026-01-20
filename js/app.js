@@ -1,8 +1,13 @@
+const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJteXBvc19pZCI6InplbmdldDAwOEBnbWFpbC5jb20iLCJ1c2VyX2lkIjoxLCJpYXQiOjE3Njg5MzA2OTAsImV4cCI6MTc2OTAxNzA5MH0.ZKLu7fGwzLkr5kky7sxLLqRan-VWOlDcmP9FibTjido"
+
 function getCustomers(){
     const contenedorTabla = document.getElementById("bodyTable");
     $.ajax({
         url: "../php/getCustomer",
         type: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
         success: function(response){
             usuarios = response.usuarios;
             contenedorTabla.innerHTML = ''; // Limpiar tabla antes de agregar filas
@@ -62,6 +67,9 @@ function addCustomer(){
     $.ajax({
         url: "../php/setCustomer",
         type: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
         data: {
             "nombre": nombre,
             "apellidos": apellidos
@@ -84,6 +92,9 @@ function updateCustomer(id){
     $.ajax({
         url: "../php/updateCustomer",
         type: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
         data: {
             nombre: nombreAct,
             apellidos: apellidosAct,
@@ -105,6 +116,9 @@ function deleteCustomer (id){
     $.ajax({
         url: "../php/deleteCustomer",
         type: "POST",
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         data: {
             id: id
         },

@@ -5,91 +5,241 @@ require_once "./Ecommerce.php";
 $router = new Router();
 
 $router->get('/php/getCustomer', function() {
-    $ecommerce = new Ecommerce();
+    $session = $_SERVER['HTTP_AUTHORIZATION'] ?? $_COOKIE['session'] ?? '';
+    if (empty($session)) {
+        http_response_code(401);
+        echo json_encode([
+            "status" => "error",
+            "code" => "ecom-400",
+            "answer" => "Token requerido"
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+    $ecommerce = new Ecommerce($session);
     $response = $ecommerce->getCustomer();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
 $router->post('/php/setCustomer', function() {
-    $ecommerce = new Ecommerce();
+    $session = $_SERVER['HTTP_AUTHORIZATION'] ?? $_COOKIE['session'] ?? '';
+    if (empty($session)) {
+        http_response_code(401);
+        echo json_encode([
+            "status" => "error",
+            "code" => "ecom-400",
+            "answer" => "Token requerido"
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+    $ecommerce = new Ecommerce($session);
     $response = $ecommerce->setCustomer();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
 $router->post('/php/updateCustomer', function() {
-    $ecommerce = new Ecommerce();
+    $session = $_SERVER['HTTP_AUTHORIZATION'] ?? $_COOKIE['session'] ?? '';
+    if (empty($session)) {
+        http_response_code(401);
+        echo json_encode([
+            "status" => "error",
+            "code" => "ecom-400",
+            "answer" => "Token requerido"
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+    $ecommerce = new Ecommerce($session);
     $response = $ecommerce->updateCustomer();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
 $router->post('/php/deleteCustomer', function() {
-    $ecommerce = new Ecommerce();
+    $session = $_SERVER['HTTP_AUTHORIZATION'] ?? $_COOKIE['session'] ?? '';
+    if (empty($session)) {
+        http_response_code(401);
+        echo json_encode([
+            "status" => "error",
+            "code" => "ecom-400",
+            "answer" => "Token requerido"
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+    $ecommerce = new Ecommerce($session);
     $response = $ecommerce->deleteCustomer();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
 $router->get('/php/getProducts', function() {
-    $ecommerce = new Ecommerce();
+    $session = $_SERVER['HTTP_AUTHORIZATION'] ?? $_COOKIE['session'] ?? '';
+    if (empty($session)) {
+        http_response_code(401);
+        echo json_encode([
+            "status" => "error",
+            "code" => "ecom-400",
+            "answer" => "Token requerido"
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+    $ecommerce = new Ecommerce($session);
     $response = $ecommerce->getProducts();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
 $router->post('/php/setProduct', function() {
-    $ecommerce = new Ecommerce();
+    $session = $_SERVER['HTTP_AUTHORIZATION'] ?? $_COOKIE['session'] ?? '';
+    if (empty($session)) {
+        http_response_code(401);
+        echo json_encode([
+            "status" => "error",
+            "code" => "ecom-400",
+            "answer" => "Token requerido"
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+    $ecommerce = new Ecommerce($session);
     $response = $ecommerce->setProduct();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
 $router->put('/php/updateProduct', function() {
-    $ecommerce = new Ecommerce();
+    $session = $_SERVER['HTTP_AUTHORIZATION'] ?? $_COOKIE['session'] ?? '';
+    if (empty($session)) {
+        http_response_code(401);
+        echo json_encode([
+            "status" => "error",
+            "code" => "ecom-400",
+            "answer" => "Token requerido"
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+    $ecommerce = new Ecommerce($session);
     $response = $ecommerce->updateProduct();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
 $router->post('/php/deleteProduct', function() {
-    $ecommerce = new Ecommerce();
+    $session = $_SERVER['HTTP_AUTHORIZATION'] ?? $_COOKIE['session'] ?? '';
+    if (empty($session)) {
+        http_response_code(401);
+        echo json_encode([
+            "status" => "error",
+            "code" => "ecom-400",
+            "answer" => "Token requerido"
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+    $ecommerce = new Ecommerce($session);
     $response = $ecommerce->deleteProduct();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
 $router->put('/php/updateStock', function() {
-    $ecommerce = new Ecommerce();
+    $session = $_SERVER['HTTP_AUTHORIZATION'] ?? $_COOKIE['session'] ?? '';
+    if (empty($session)) {
+        http_response_code(401);
+        echo json_encode([
+            "status" => "error",
+            "code" => "ecom-400",
+            "answer" => "Token requerido"
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+    $ecommerce = new Ecommerce($session);
     $response = $ecommerce->updateStock();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
 $router->get('/php/getOrders', function() {
-    $ecommerce = new Ecommerce();
+    $session = $_SERVER['HTTP_AUTHORIZATION'] ?? $_COOKIE['session'] ?? '';
+    if (empty($session)) {
+        http_response_code(401);
+        echo json_encode([
+            "status" => "error",
+            "code" => "ecom-400",
+            "answer" => "Token requerido"
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+    $ecommerce = new Ecommerce($session);
     $response = $ecommerce->getOrders();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
 $router->post('/php/setOrder', function() {
-    $ecommerce = new Ecommerce();
+    $session = $_SERVER['HTTP_AUTHORIZATION'] ?? $_COOKIE['session'] ?? '';
+    if (empty($session)) {
+        http_response_code(401);
+        echo json_encode([
+            "status" => "error",
+            "code" => "ecom-400",
+            "answer" => "Token requerido"
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+    $ecommerce = new Ecommerce($session);
     $response = $ecommerce->setOrder();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
 $router->put('/php/updateOrderStatus', function() {
-    $ecommerce = new Ecommerce();
+    $session = $_SERVER['HTTP_AUTHORIZATION'] ?? $_COOKIE['session'] ?? '';
+    if (empty($session)) {
+        http_response_code(401);
+        echo json_encode([
+            "status" => "error",
+            "code" => "ecom-400",
+            "answer" => "Token requerido"
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+    $ecommerce = new Ecommerce($session);
     $response = $ecommerce->updateOrderStatus();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
 $router->post('/php/deleteOrder', function() {
-    $ecommerce = new Ecommerce();
+    $session = $_SERVER['HTTP_AUTHORIZATION'] ?? $_COOKIE['session'] ?? '';
+    if (empty($session)) {
+        http_response_code(401);
+        echo json_encode([
+            "status" => "error",
+            "code" => "ecom-400",
+            "answer" => "Token requerido"
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+    $ecommerce = new Ecommerce($session);
     $response = $ecommerce->deleteOrder();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
 $router->get('/php/getStats', function() {
-    $ecommerce = new Ecommerce();
+    $session = $_SERVER['HTTP_AUTHORIZATION'] ?? $_COOKIE['session'] ?? '';
+    if (empty($session)) {
+        http_response_code(401);
+        echo json_encode([
+            "status" => "error",
+            "code" => "ecom-400",
+            "answer" => "Token requerido"
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+    $ecommerce = new Ecommerce($session);
     $response = $ecommerce->getStats();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
 $router->get('/php/search', function() {
-    $ecommerce = new Ecommerce();
+    $session = $_SERVER['HTTP_AUTHORIZATION'] ?? $_COOKIE['session'] ?? '';
+    if (empty($session)) {
+        http_response_code(401);
+        echo json_encode([
+            "status" => "error",
+            "code" => "ecom-400",
+            "answer" => "Token requerido"
+        ], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+    $ecommerce = new Ecommerce($session);
     $response = $ecommerce->search();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });

@@ -1,15 +1,22 @@
 <?php
 
 require_once "./Database.php";
+require_once "./jwt.php";
 
 class Ecommerce 
 {
     public string $mypos_id;
     public string $codeStr = "ecom-";
 
-    public function __construct(){
-        $this->mypos_id = $_COOKIE['mypos_id'] ?? '';
-
+    public function __construct($session) {
+        $jwt = new JWT();
+        $payload = $jwt->decrypt($session);
+        
+        if ($payload && isset($payload['mypos_id'])) {
+            $this->mypos_id = $payload['mypos_id'];
+        } else {
+            $this->mypos_id = '';
+        }
     }
     
     public function getCustomer(): array
