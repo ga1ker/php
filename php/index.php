@@ -244,4 +244,22 @@ $router->get('/php/search', function() {
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
+$router->get('/shopify/getCustomer', function() {
+    $shopify = new Shopify();
+    $response = $shopify->getCustomer();
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+});
+
+$router->post('/shopify/setCustomer', function() {
+    $shopify = new Shopify();
+    $response = $shopify->setCustomer();
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+});
+
+$router->get('/shopify/getProducts', function() {
+    $shopify = new Shopify();
+    $response = $shopify->getProducts();
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+});
+
 $router->route();
