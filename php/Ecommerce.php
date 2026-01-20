@@ -131,4 +131,65 @@ class Ecommerce
             return $json;
         }
     }
+
+    public function deleteCustomer(){
+        $json = [];
+        try{
+            $input = json_decode(file_get_contents('php://input'), true);
+
+            if (!isset($input["id"])) {
+                http_response_code(404);
+                $json["status"] = "error";
+                $json["code"] = 404;
+                $json["answer"] = "Falta id";
+                return $json;
+            }
+            
+            $pdo = Database::getConnection();
+            $stmt = $pdo->prepare("DELETE FROM pos WHERE id = ? AND mypos_id = ?");
+            $result = $stmt->execute([
+                $input["id"],
+                $this->mypos_id
+            ]);
+
+            http_response_code(200);
+            $json["status"] = "ok";
+            $json["answer"] = "Usuario eliminado";
+            $json["code"] = 200;
+            return $json;
+        }catch(Exception $e){
+            $json["status"] = "error";
+            $json["code"] = 500;
+            $json["answer"] = "client - " . $e->getCode();
+            return $json;
+        }
+    }
+
+    public function getPerfumes(){
+        $json = [];
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, "https://api.aromantial.com/perfumes");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HEADER, false);
+
+            $response = curl_exec($ch);
+            if(curl_errno($ch)){
+                throw new Exception(curl_error($ch), curl_errno($ch));
+            } else {
+                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                $data = json_decode($response, true);
+                return $data;
+            }
+
+        } catch (Exception $e){
+            http_response_code(500);
+            $json["status"] = "error";
+            $json["code"] = 500;
+            $json["answer"] = "Error del servidor: " . $e->getMessage();
+            return $json;
+        }
+    }
+
+    
 }
