@@ -5,9 +5,11 @@ require_once "./Database.php";
 class Ecommerce 
 {
     public string $mypos_id;
+    public string $codeStr = "ecom-";
 
     public function __construct(){
         $this->mypos_id = $_COOKIE['mypos_id'] ?? '';
+
     }
     
     public function getCustomer(): array
@@ -15,12 +17,21 @@ class Ecommerce
         $json = [];
         try {
             if($this->mypos_id == ''){
-                http_response_code(404);
+                http_response_code(400);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 400;
                 $json["answer"] = "No hay mypos_id";
                 return $json;
             }
+
+
+            // Api de aizu
+            // $ch = curl_init();
+
+            // curl_setopt($ch, CURLOPT_URL, "api.aizu");
+            // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            
+            // $response = curl_exec($ch);
             
             $pdo = Database::getConnection();
             $stmt = $pdo->prepare("SELECT id, nombre, apellidos FROM pos WHERE mypos_id = ? ORDER BY id");
@@ -29,7 +40,7 @@ class Ecommerce
 
             http_response_code(200);
             $json["status"] = "ok";
-            $json["code"] = 200;
+            $json["code"] = $this->codeStr . 200;
             $json["answer"] = "Usuarios obtenidos correctamente";
             $json["usuarios"] = $usuarios;
             return $json;
@@ -37,8 +48,8 @@ class Ecommerce
         } catch (Exception $e) {
             http_response_code(500);
             $json["status"] = "error";
-            $json["code"] = 500;
-            $json["answer"] = "Error del servidor: " . $e->getMessage();
+            $json["code"] = $this->codeStr . 500;
+            $json["answer"] = "serv - " . $e->getCode();
             return $json;
         }
     }
@@ -47,19 +58,20 @@ class Ecommerce
         $json = [];
         try {
             if($this->mypos_id == ''){
-                http_response_code(404);
+                http_response_code(401);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 401;
                 $json["answer"] = "No hay mypos_id";
                 return $json;
             }
             
-            $input = json_decode(file_get_contents('php://input'), true);
+            $nombre = isset($_POST["nombre"]) ? $_POST["nombre"] : '';
+            $apellidos = isset($_POST["apellidos"]) ? $_POST["apellidos"] : '';
             
-            if (!$input || !isset($input['nombre']) || !isset($input['apellidos']) || empty(trim($input['nombre'])) || empty(trim($input['apellidos']))) {
-                http_response_code(400);
+            if ($nombre == '' || $apellidos == '') {
+                http_response_code(402);
                 $json["status"] = "error";
-                $json["code"] = 400;
+                $json["code"] = $this->codeStr . 402;
                 $json["answer"] = "Nombre y apellidos son requeridos y no pueden estar vacíos";
                 return $json;
             }
@@ -68,22 +80,21 @@ class Ecommerce
             $stmt = $pdo->prepare("INSERT INTO pos (mypos_id, nombre, apellidos) VALUES (?, ?, ?)");
             $result = $stmt->execute([
                 $this->mypos_id,
-                trim($input['nombre']),
-                trim($input['apellidos'])
+                $nombre,
+                $apellidos
             ]);
 
             http_response_code(201);
             $json["status"] = "ok";
             $json["code"] = 201;
             $json["answer"] = "Usuario creado correctamente";
-            $json["id"] = $pdo->lastInsertId();
             return $json;
 
         } catch (Exception $e) {
-            http_response_code(500);
+            http_response_code(501);
             $json["status"] = "error";
-            $json["code"] = 500;
-            $json["answer"] = "Error: " . $e->getMessage();
+            $json["code"] = $this->codeStr . 501;
+            $json["answer"] = "serv - " . $e->getCode();
             return $json;
         }
     }
@@ -93,20 +104,22 @@ class Ecommerce
 
         try{
             if ($this->mypos_id == "") {
-                http_response_code(404);
+                http_response_code(403);
                 $json["status"] = "error";
                 $json["answer"] = "No hay mypos_id";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 403;
                 return $json;
             }
-            
-            $input = json_decode(file_get_contents('php://input'), true);
 
-            if (!$input || !isset($input['id']) || !isset($input['nombre']) || !isset($input['apellidos']) || 
-                empty(trim($input['nombre'])) || empty(trim($input['apellidos']))) {
-                http_response_code(400);
+            $nombre = isset($_POST["nombre"]) ? $_POST["nombre"] : '';
+            $apellidos = isset($_POST["apellidos"]) ? $_POST["apellidos"] : '';
+            $id = isset($_POST["id"]) ? $_POST["id"] : '';
+            
+
+            if ($id == '' || $apellidos == '' || $nombre == '') {
+                http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 400;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "ID, nombre y apellidos son requeridos";
                 return $json;
             }
@@ -114,31 +127,31 @@ class Ecommerce
             $pdo = Database::getConnection();
             $stmt = $pdo->prepare("UPDATE pos SET nombre = ?, apellidos = ? WHERE id = ? AND mypos_id = ?");
             $result = $stmt->execute([
-                trim($input["nombre"]),
-                trim($input["apellidos"]),
-                intval($input["id"]),
+                $nombre,
+                $apellidos,
+                $id,
                 $this->mypos_id
             ]);
 
             if ($stmt->rowCount() === 0) {
-                http_response_code(404);
+                http_response_code(405);
                 $json["status"] = "error";
                 $json["answer"] = "Cliente no encontrado";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 405;
                 return $json;
             }
 
-            http_response_code(200);
+            http_response_code(203);
             $json["status"] = "ok";
             $json["answer"] = "Usuario actualizado";
-            $json["code"] = 200;
+            $json["code"] = $this->codeStr . 203;
             return $json;
 
         } catch (Exception $e){
-            http_response_code(500);
-            $json["answer"] = "Error: " . $e->getMessage();
-            $json["code"] = 500;
-            $json["status"] = "error";
+            http_response_code(502);
+            $json["answer"] = "Error: " . $e->getCode();
+            $json["code"] = $this->codeStr . 502;
+            $json["status"] = "serv - " . $e->getCode();
             return $json;
         }
     }
@@ -147,19 +160,19 @@ class Ecommerce
         $json = [];
         try{
             if ($this->mypos_id == "") {
-                http_response_code(404);
+                http_response_code(406);
                 $json["status"] = "error";
                 $json["answer"] = "No hay mypos_id";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 406;
                 return $json;
             }
             
-            $input = json_decode(file_get_contents('php://input'), true);
+            $id = isset($_POST["id"]) ? $_POST["id"] : '';
 
-            if (!isset($input["id"])) {
-                http_response_code(400);
+            if ($id == '') {
+                http_response_code(407);
                 $json["status"] = "error";
-                $json["code"] = 400;
+                $json["code"] = $this->codeStr . 407;
                 $json["answer"] = "ID es requerido";
                 return $json;
             }
@@ -167,29 +180,29 @@ class Ecommerce
             $pdo = Database::getConnection();
             $stmt = $pdo->prepare("DELETE FROM pos WHERE id = ? AND mypos_id = ?");
             $result = $stmt->execute([
-                intval($input["id"]),
+                intval($id),
                 $this->mypos_id
             ]);
 
             if ($stmt->rowCount() === 0) {
-                http_response_code(404);
+                http_response_code(408);
                 $json["status"] = "error";
                 $json["answer"] = "Cliente no encontrado";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 408;
                 return $json;
             }
 
-            http_response_code(200);
+            http_response_code(203);
             $json["status"] = "ok";
             $json["answer"] = "Usuario eliminado";
-            $json["code"] = 200;
+            $json["code"] = $this->codeStr . 203;
             return $json;
             
         } catch (Exception $e){
-            http_response_code(500);
+            http_response_code(503);
             $json["status"] = "error";
-            $json["code"] = 500;
-            $json["answer"] = "Error: " . $e->getMessage();
+            $json["code"] = $this->codeStr . 503;
+            $json["answer"] = "Error: " . $e->getCode();
             return $json;
         }
     }

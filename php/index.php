@@ -16,13 +16,13 @@ $router->post('/php/setCustomer', function() {
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
-$router->put('/php/updateCustomer', function() {
+$router->post('/php/updateCustomer', function() {
     $ecommerce = new Ecommerce();
     $response = $ecommerce->updateCustomer();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
-$router->delete('/php/deleteCustomer', function() {
+$router->post('/php/deleteCustomer', function() {
     $ecommerce = new Ecommerce();
     $response = $ecommerce->deleteCustomer();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
@@ -46,7 +46,7 @@ $router->put('/php/updateProduct', function() {
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
-$router->delete('/php/deleteProduct', function() {
+$router->post('/php/deleteProduct', function() {
     $ecommerce = new Ecommerce();
     $response = $ecommerce->deleteProduct();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
@@ -76,7 +76,7 @@ $router->put('/php/updateOrderStatus', function() {
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
-$router->delete('/php/deleteOrder', function() {
+$router->post('/php/deleteOrder', function() {
     $ecommerce = new Ecommerce();
     $response = $ecommerce->deleteOrder();
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);

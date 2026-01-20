@@ -1,9 +1,8 @@
-function getUsuarios(){
+function getCustomers(){
     const contenedorTabla = document.getElementById("bodyTable");
     $.ajax({
         url: "../php/getCustomer",
         type: "GET",
-        contentType: 'application/json', 
         success: function(response){
             usuarios = response.usuarios;
             contenedorTabla.innerHTML = ''; // Limpiar tabla antes de agregar filas
@@ -42,7 +41,7 @@ function getUsuarios(){
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="button" class="btn btn-primary" onclick="updateUsuario(${usuario.id})">Actualizar</button>
+                                <button type="button" class="btn btn-primary" onclick="updateCustomer(${usuario.id})">Actualizar</button>
                             </div>
                             </div>
                         </div>
@@ -57,21 +56,20 @@ function getUsuarios(){
     
 }
 
-function addUsuario(){
+function addCustomer(){
     const nombre = document.getElementById("nombre").value
     const apellidos = document.getElementById("apellidos").value
     $.ajax({
         url: "../php/setCustomer",
         type: "POST",
-        contentType: 'application/json',
-        data: JSON.stringify({
+        data: {
             "nombre": nombre,
             "apellidos": apellidos
-        }),
+        },
         success: function(response){
             document.getElementById("nombre").value = "";
             document.getElementById("apellidos").value = "";
-            getUsuarios();
+            getCustomers();
         },
         error: function(e){
             console.error(e);
@@ -79,24 +77,23 @@ function addUsuario(){
     })
 }
 
-function updateUsuario (id){
+function updateCustomer(id){
     const nombreAct = document.getElementById("nombreAct-" + id).value
     const apellidosAct = document.getElementById("apellidosAct-" + id).value
 
     $.ajax({
         url: "../php/updateCustomer",
-        type: "PUT",
-        contentType: "application/json",
-        data: JSON.stringify({
+        type: "POST",
+        data: {
             nombre: nombreAct,
             apellidos: apellidosAct,
             id: id
-        }),
+        },
         success: function(response){
             const modal = document.getElementById("exampleModal-" + id);
             const modalInstance = bootstrap.Modal.getInstance(modal);
             modalInstance.hide();
-            getUsuarios();
+            getCustomers();
         },
         error: function(e){
             console.error(e);
@@ -108,12 +105,11 @@ function deleteCustomer (id){
     $.ajax({
         url: "../php/deleteCustomer",
         type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify({
+        data: {
             id: id
-        }),
+        },
         success: function(response){
-            getUsuarios();
+            getCustomers();
         },
         error: function(e){
             console.error(e);
@@ -121,5 +117,4 @@ function deleteCustomer (id){
     })
 }
 
-
-getUsuarios()
+getCustomers()

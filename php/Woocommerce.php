@@ -1,5 +1,5 @@
 <?php
 
-class Woocommerce {
+class Woocommerce extends Ecommerce {
     
 }
