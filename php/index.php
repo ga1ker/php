@@ -4,36 +4,94 @@ require_once "./Ecommerce.php";
 
 $router = new Router();
 
-// rutas para clientes
 $router->get('/php/getCustomer', function() {
     $ecommerce = new Ecommerce();
     $response = $ecommerce->getCustomer();
-    print(json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
 $router->post('/php/setCustomer', function() {
     $ecommerce = new Ecommerce();
     $response = $ecommerce->setCustomer();
-    print(json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
 $router->put('/php/updateCustomer', function() {
     $ecommerce = new Ecommerce();
     $response = $ecommerce->updateCustomer();
-    print(json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
-$router->get('/php/getPerfumes', function() {
-    $ecommerce = new Ecommerce();
-    $response = $ecommerce->getPerfumes();
-    print(json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-});
-
-$router->post('/php/deleteCustomer', function(){
+$router->delete('/php/deleteCustomer', function() {
     $ecommerce = new Ecommerce();
     $response = $ecommerce->deleteCustomer();
-    print(json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
+$router->get('/php/getProducts', function() {
+    $ecommerce = new Ecommerce();
+    $response = $ecommerce->getProducts();
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+});
+
+$router->post('/php/setProduct', function() {
+    $ecommerce = new Ecommerce();
+    $response = $ecommerce->setProduct();
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+});
+
+$router->put('/php/updateProduct', function() {
+    $ecommerce = new Ecommerce();
+    $response = $ecommerce->updateProduct();
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+});
+
+$router->delete('/php/deleteProduct', function() {
+    $ecommerce = new Ecommerce();
+    $response = $ecommerce->deleteProduct();
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+});
+
+$router->put('/php/updateStock', function() {
+    $ecommerce = new Ecommerce();
+    $response = $ecommerce->updateStock();
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+});
+
+$router->get('/php/getOrders', function() {
+    $ecommerce = new Ecommerce();
+    $response = $ecommerce->getOrders();
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+});
+
+$router->post('/php/setOrder', function() {
+    $ecommerce = new Ecommerce();
+    $response = $ecommerce->setOrder();
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+});
+
+$router->put('/php/updateOrderStatus', function() {
+    $ecommerce = new Ecommerce();
+    $response = $ecommerce->updateOrderStatus();
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+});
+
+$router->delete('/php/deleteOrder', function() {
+    $ecommerce = new Ecommerce();
+    $response = $ecommerce->deleteOrder();
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+});
+
+$router->get('/php/getStats', function() {
+    $ecommerce = new Ecommerce();
+    $response = $ecommerce->getStats();
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+});
+
+$router->get('/php/search', function() {
+    $ecommerce = new Ecommerce();
+    $response = $ecommerce->search();
+    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+});
 
 $router->route();
