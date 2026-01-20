@@ -221,7 +221,7 @@ class Ecommerce
             if($this->mypos_id == ''){
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "No hay mypos_id";
                 return $json;
             }
@@ -243,14 +243,14 @@ class Ecommerce
                 if (!$producto) {
                     http_response_code(404);
                     $json["status"] = "error";
-                    $json["code"] = 404;
+                    $json["code"] = $this->codeStr . 404;
                     $json["answer"] = "Producto no encontrado";
                     return $json;
                 }
                 
                 http_response_code(200);
                 $json["status"] = "ok";
-                $json["code"] = 200;
+                $json["code"] = $this->codeStr . 200;
                 $json["answer"] = "Producto obtenido";
                 $json["producto"] = $producto;
                 return $json;
@@ -291,7 +291,7 @@ class Ecommerce
 
             http_response_code(200);
             $json["status"] = "ok";
-            $json["code"] = 200;
+            $json["code"] = $this->codeStr . 200;
             $json["answer"] = "Productos obtenidos correctamente";
             $json["productos"] = $productos;
             $json["total"] = count($productos);
@@ -300,7 +300,7 @@ class Ecommerce
         } catch (Exception $e) {
             http_response_code(500);
             $json["status"] = "error";
-            $json["code"] = 500;
+            $json["code"] = $this->codeStr . 500;
             $json["answer"] = "Error: " . $e->getMessage();
             return $json;
         }
@@ -313,7 +313,7 @@ class Ecommerce
             if($this->mypos_id == ''){
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "No hay mypos_id";
                 return $json;
             }
@@ -325,7 +325,7 @@ class Ecommerce
                 if (!isset($input[$campo]) || (is_string($input[$campo]) && empty(trim($input[$campo])))) {
                     http_response_code(400);
                     $json["status"] = "error";
-                    $json["code"] = 400;
+                    $json["code"] = $this->codeStr . 400;
                     $json["answer"] = "Campo requerido: " . $campo;
                     return $json;
                 }
@@ -339,7 +339,7 @@ class Ecommerce
             if ($checkStmt->fetch()) {
                 http_response_code(409);
                 $json["status"] = "error";
-                $json["code"] = 409;
+                $json["code"] = $this->codeStr . 409;
                 $json["answer"] = "El código ya existe";
                 return $json;
             }
@@ -366,7 +366,7 @@ class Ecommerce
 
             http_response_code(201);
             $json["status"] = "ok";
-            $json["code"] = 201;
+            $json["code"] = $this->codeStr . 201;
             $json["answer"] = "Producto creado correctamente";
             $json["id"] = $pdo->lastInsertId();
             return $json;
@@ -374,7 +374,7 @@ class Ecommerce
         } catch (Exception $e) {
             http_response_code(500);
             $json["status"] = "error";
-            $json["code"] = 500;
+            $json["code"] = $this->codeStr . 500;
             $json["answer"] = "Error: " . $e->getMessage();
             return $json;
         }
@@ -387,7 +387,7 @@ class Ecommerce
             if($this->mypos_id == ''){
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "No hay mypos_id";
                 return $json;
             }
@@ -397,7 +397,7 @@ class Ecommerce
             if (!isset($input['id'])) {
                 http_response_code(400);
                 $json["status"] = "error";
-                $json["code"] = 400;
+                $json["code"] = $this->codeStr . 400;
                 $json["answer"] = "ID del producto es requerido";
                 return $json;
             }
@@ -407,7 +407,7 @@ class Ecommerce
                 if (!isset($input[$campo]) || (is_string($input[$campo]) && empty(trim($input[$campo])))) {
                     http_response_code(400);
                     $json["status"] = "error";
-                    $json["code"] = 400;
+                    $json["code"] = $this->codeStr . 400;
                     $json["answer"] = "Campo requerido: " . $campo;
                     return $json;
                 }
@@ -421,7 +421,7 @@ class Ecommerce
             if ($checkStmt->fetch()) {
                 http_response_code(409);
                 $json["status"] = "error";
-                $json["code"] = 409;
+                $json["code"] = $this->codeStr . 409;
                 $json["answer"] = "El código ya existe para otro producto";
                 return $json;
             }
@@ -451,21 +451,21 @@ class Ecommerce
             if ($stmt->rowCount() === 0) {
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "Producto no encontrado";
                 return $json;
             }
 
             http_response_code(200);
             $json["status"] = "ok";
-            $json["code"] = 200;
+            $json["code"] = $this->codeStr . 200;
             $json["answer"] = "Producto actualizado correctamente";
             return $json;
 
         } catch (Exception $e) {
             http_response_code(500);
             $json["status"] = "error";
-            $json["code"] = 500;
+            $json["code"] = $this->codeStr . 500;
             $json["answer"] = "Error: " . $e->getMessage();
             return $json;
         }
@@ -478,7 +478,7 @@ class Ecommerce
             if($this->mypos_id == ''){
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "No hay mypos_id";
                 return $json;
             }
@@ -488,7 +488,7 @@ class Ecommerce
             if (!isset($input['id'])) {
                 http_response_code(400);
                 $json["status"] = "error";
-                $json["code"] = 400;
+                $json["code"] = $this->codeStr . 400;
                 $json["answer"] = "ID del producto es requerido";
                 return $json;
             }
@@ -507,7 +507,7 @@ class Ecommerce
             if ($ordenes && $ordenes['total'] > 0) {
                 http_response_code(400);
                 $json["status"] = "error";
-                $json["code"] = 400;
+                $json["code"] = $this->codeStr . 400;
                 $json["answer"] = "No se puede eliminar el producto porque tiene órdenes relacionadas";
                 return $json;
             }
@@ -518,21 +518,21 @@ class Ecommerce
             if ($stmt->rowCount() === 0) {
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "Producto no encontrado";
                 return $json;
             }
 
             http_response_code(200);
             $json["status"] = "ok";
-            $json["code"] = 200;
+            $json["code"] = $this->codeStr . 200;
             $json["answer"] = "Producto eliminado correctamente";
             return $json;
 
         } catch (Exception $e) {
             http_response_code(500);
             $json["status"] = "error";
-            $json["code"] = 500;
+            $json["code"] = $this->codeStr . 500;
             $json["answer"] = "Error: " . $e->getMessage();
             return $json;
         }
@@ -545,7 +545,7 @@ class Ecommerce
             if($this->mypos_id == ''){
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "No hay mypos_id";
                 return $json;
             }
@@ -555,7 +555,7 @@ class Ecommerce
             if (!isset($input['producto_id']) || !isset($input['cantidad'])) {
                 http_response_code(400);
                 $json["status"] = "error";
-                $json["code"] = 400;
+                $json["code"] = $this->codeStr . 400;
                 $json["answer"] = "producto_id y cantidad son requeridos";
                 return $json;
             }
@@ -569,7 +569,7 @@ class Ecommerce
             if (!$producto) {
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "Producto no encontrado";
                 return $json;
             }
@@ -579,7 +579,7 @@ class Ecommerce
             if ($nuevoStock < 0) {
                 http_response_code(400);
                 $json["status"] = "error";
-                $json["code"] = 400;
+                $json["code"] = $this->codeStr . 400;
                 $json["answer"] = "Stock no puede ser negativo";
                 return $json;
             }
@@ -589,7 +589,7 @@ class Ecommerce
 
             http_response_code(200);
             $json["status"] = "ok";
-            $json["code"] = 200;
+            $json["code"] = $this->codeStr . 200;
             $json["answer"] = "Stock actualizado correctamente";
             $json["stock_anterior"] = $producto['stock'];
             $json["stock_nuevo"] = $nuevoStock;
@@ -598,7 +598,7 @@ class Ecommerce
         } catch (Exception $e) {
             http_response_code(500);
             $json["status"] = "error";
-            $json["code"] = 500;
+            $json["code"] = $this->codeStr . 500;
             $json["answer"] = "Error: " . $e->getMessage();
             return $json;
         }
@@ -611,7 +611,7 @@ class Ecommerce
             if($this->mypos_id == ''){
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "No hay mypos_id";
                 return $json;
             }
@@ -634,7 +634,7 @@ class Ecommerce
                 if (!$orden) {
                     http_response_code(404);
                     $json["status"] = "error";
-                    $json["code"] = 404;
+                    $json["code"] = $this->codeStr . 404;
                     $json["answer"] = "Orden no encontrada";
                     return $json;
                 }
@@ -645,7 +645,7 @@ class Ecommerce
                 
                 http_response_code(200);
                 $json["status"] = "ok";
-                $json["code"] = 200;
+                $json["code"] = $this->codeStr . 200;
                 $json["answer"] = "Orden obtenida";
                 $json["orden"] = $orden;
                 return $json;
@@ -713,7 +713,7 @@ class Ecommerce
 
             http_response_code(200);
             $json["status"] = "ok";
-            $json["code"] = 200;
+            $json["code"] = $this->codeStr . 200;
             $json["answer"] = "Órdenes obtenidas correctamente";
             $json["ordenes"] = $ordenes;
             $json["total"] = $total['total'] ?? 0;
@@ -724,7 +724,7 @@ class Ecommerce
         } catch (Exception $e) {
             http_response_code(500);
             $json["status"] = "error";
-            $json["code"] = 500;
+            $json["code"] = $this->codeStr . 500;
             $json["answer"] = "Error: " . $e->getMessage();
             return $json;
         }
@@ -737,7 +737,7 @@ class Ecommerce
             if($this->mypos_id == ''){
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "No hay mypos_id";
                 return $json;
             }
@@ -747,7 +747,7 @@ class Ecommerce
             if (!$input || !isset($input['cliente_id']) || !isset($input['items']) || !is_array($input['items']) || empty($input['items'])) {
                 http_response_code(400);
                 $json["status"] = "error";
-                $json["code"] = 400;
+                $json["code"] = $this->codeStr . 400;
                 $json["answer"] = "cliente_id y items (array no vacío) son requeridos";
                 return $json;
             }
@@ -763,7 +763,7 @@ class Ecommerce
                 $pdo->rollBack();
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "Cliente no encontrado";
                 return $json;
             }
@@ -778,7 +778,7 @@ class Ecommerce
                     $pdo->rollBack();
                     http_response_code(400);
                     $json["status"] = "error";
-                    $json["code"] = 400;
+                    $json["code"] = $this->codeStr . 400;
                     $json["answer"] = "Item " . ($index + 1) . ": producto_id y cantidad (>0) son requeridos";
                     return $json;
                 }
@@ -791,7 +791,7 @@ class Ecommerce
                     $pdo->rollBack();
                     http_response_code(404);
                     $json["status"] = "error";
-                    $json["code"] = 404;
+                    $json["code"] = $this->codeStr . 404;
                     $json["answer"] = "Producto no encontrado";
                     return $json;
                 }
@@ -800,7 +800,7 @@ class Ecommerce
                     $pdo->rollBack();
                     http_response_code(400);
                     $json["status"] = "error";
-                    $json["code"] = 400;
+                    $json["code"] = $this->codeStr . 400;
                     $json["answer"] = "Stock insuficiente para: " . $producto['nombre'];
                     return $json;
                 }
@@ -857,7 +857,7 @@ class Ecommerce
 
             http_response_code(201);
             $json["status"] = "ok";
-            $json["code"] = 201;
+            $json["code"] = $this->codeStr . 201;
             $json["answer"] = "Orden creada correctamente";
             $json["orden_id"] = $ordenId;
             $json["numero_orden"] = $numeroOrden;
@@ -874,7 +874,7 @@ class Ecommerce
             }
             http_response_code(500);
             $json["status"] = "error";
-            $json["code"] = 500;
+            $json["code"] = $this->codeStr . 500;
             $json["answer"] = "Error: " . $e->getMessage();
             return $json;
         }
@@ -887,7 +887,7 @@ class Ecommerce
             if($this->mypos_id == ''){
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "No hay mypos_id";
                 return $json;
             }
@@ -897,7 +897,7 @@ class Ecommerce
             if (!isset($input['orden_id']) || !isset($input['estado'])) {
                 http_response_code(400);
                 $json["status"] = "error";
-                $json["code"] = 400;
+                $json["code"] = $this->codeStr . 400;
                 $json["answer"] = "orden_id y estado son requeridos";
                 return $json;
             }
@@ -906,7 +906,7 @@ class Ecommerce
             if (!in_array($input['estado'], $estadosValidos)) {
                 http_response_code(400);
                 $json["status"] = "error";
-                $json["code"] = 400;
+                $json["code"] = $this->codeStr . 400;
                 $json["answer"] = "Estado no válido";
                 return $json;
             }
@@ -932,21 +932,21 @@ class Ecommerce
             if ($stmt->rowCount() === 0) {
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "Orden no encontrada";
                 return $json;
             }
 
             http_response_code(200);
             $json["status"] = "ok";
-            $json["code"] = 200;
+            $json["code"] = $this->codeStr . 200;
             $json["answer"] = "Estado actualizado";
             return $json;
 
         } catch (Exception $e) {
             http_response_code(500);
             $json["status"] = "error";
-            $json["code"] = 500;
+            $json["code"] = $this->codeStr . 500;
             $json["answer"] = "Error: " . $e->getMessage();
             return $json;
         }
@@ -984,7 +984,7 @@ class Ecommerce
             if($this->mypos_id == ''){
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "No hay mypos_id";
                 return $json;
             }
@@ -994,7 +994,7 @@ class Ecommerce
             if (!isset($input['id'])) {
                 http_response_code(400);
                 $json["status"] = "error";
-                $json["code"] = 400;
+                $json["code"] = $this->codeStr . 400;
                 $json["answer"] = "ID de orden es requerido";
                 return $json;
             }
@@ -1008,7 +1008,7 @@ class Ecommerce
             if (!$orden) {
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "Orden no encontrada";
                 return $json;
             }
@@ -1016,7 +1016,7 @@ class Ecommerce
             if ($orden['estado'] !== 'pendiente') {
                 http_response_code(400);
                 $json["status"] = "error";
-                $json["code"] = 400;
+                $json["code"] = $this->codeStr . 400;
                 $json["answer"] = "Solo se pueden eliminar órdenes pendientes";
                 return $json;
             }
@@ -1028,14 +1028,14 @@ class Ecommerce
 
             http_response_code(200);
             $json["status"] = "ok";
-            $json["code"] = 200;
+            $json["code"] = $this->codeStr . 200;
             $json["answer"] = "Orden eliminada";
             return $json;
 
         } catch (Exception $e) {
             http_response_code(500);
             $json["status"] = "error";
-            $json["code"] = 500;
+            $json["code"] = $this->codeStr . 500;
             $json["answer"] = "Error: " . $e->getMessage();
             return $json;
         }
@@ -1048,7 +1048,7 @@ class Ecommerce
             if($this->mypos_id == ''){
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "No hay mypos_id";
                 return $json;
             }
@@ -1104,7 +1104,7 @@ class Ecommerce
 
             http_response_code(200);
             $json["status"] = "ok";
-            $json["code"] = 200;
+            $json["code"] = $this->codeStr . 200;
             $json["answer"] = "Estadísticas obtenidas";
             $json["stats"] = [
                 "stock_bajo" => $stockBajo,
@@ -1117,7 +1117,7 @@ class Ecommerce
         } catch (Exception $e) {
             http_response_code(500);
             $json["status"] = "error";
-            $json["code"] = 500;
+            $json["code"] = $this->codeStr . 500;
             $json["answer"] = "Error: " . $e->getMessage();
             return $json;
         }
@@ -1130,7 +1130,7 @@ class Ecommerce
             if($this->mypos_id == ''){
                 http_response_code(404);
                 $json["status"] = "error";
-                $json["code"] = 404;
+                $json["code"] = $this->codeStr . 404;
                 $json["answer"] = "No hay mypos_id";
                 return $json;
             }
@@ -1140,7 +1140,7 @@ class Ecommerce
             if (empty($query)) {
                 http_response_code(400);
                 $json["status"] = "error";
-                $json["code"] = 400;
+                $json["code"] = $this->codeStr . 400;
                 $json["answer"] = "Parámetro 'q' es requerido";
                 return $json;
             }
@@ -1176,7 +1176,7 @@ class Ecommerce
 
             http_response_code(200);
             $json["status"] = "ok";
-            $json["code"] = 200;
+            $json["code"] = $this->codeStr . 200;
             $json["answer"] = "Búsqueda completada";
             $json["resultados"] = $resultados;
             return $json;
@@ -1184,7 +1184,7 @@ class Ecommerce
         } catch (Exception $e) {
             http_response_code(500);
             $json["status"] = "error";
-            $json["code"] = 500;
+            $json["code"] = $this->codeStr . 500;
             $json["answer"] = "Error: " . $e->getMessage();
             return $json;
         }
