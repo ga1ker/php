@@ -1,71 +1,43 @@
 <?php
 
-require_once "./MarketplaceBase.php";
-require_once "./Shopify.php";
-require_once "./Amazon.php";
-require_once "./Woocommerce.php";
-require_once "./tiendaNube.php";
-require_once "./MercadoLibre.php";
+abstract class MarketplaceBase
+{
+    protected string $marketplaceName;
+    protected array $config = []; // credenciales del marketplace
 
-class MarketplaceBase {
-
-    public static function create(
-        string $type,
-        array $config
-    ): MarketplaceBase {
-        switch (strtolower($type)){
-
-        case 'shopify':
-            return new Shopify($config);
-
-        case 'woocomerce':
-            return new Woocomerce($config);
-
-        case 'mercadolibre':
-            return new MercadoLibre($config);
-
-        case 'amazon':
-            return new Amazon($config);
-
-        case 'tiendanube':
-            return new TiendaNube($config);
-
-        default:
-            throw new Exception("Marketplace no sosportado: ${type}");
-        }
-    }
-
-    protected string $marketplaceName; // nombre que se definira con Sh,Woo,tN,Amz,ML
-    protected array $config = []; // credenciales o configuración
-
-    public function __construct(array $config) { // mi constructor base
+    public function __construct(array $config)
+    {
         $this->config = $config;
         $this->validateConfig();
     }
 
-    protected function validateConfig(): void { //validamos que tenga minimo la config inicial
+    protected function validateConfig(): void // validar las credenciales
+    {
         if (empty($this->config)) {
-            throw new Exception("Configuración vacía para {$this->marketplaceName}");
+            throw new Exception(
+                "Configuración vacía para {$this->marketplaceName}"
+            );
         }
     }
 
-    public function getMarketplaceName(): string { // solo obtenemos el nombre del sitio
-        return $this->getMarketplaceName;
+    public function getMarketplaceName(): string // obtener el nombre del marketplace
+    {
+        return $this->marketplaceName;
     }
 
-    protected function request ( // realiza petición HTTP "GET, POST, PUT, DELETE"
+    protected function request( // los request de GET, POST, UPDATE
         string $url,
         string $method = 'GET',
-        string $headers = [],
-        string $body = []
+        array $headers = [],
+        array $body = []
     ): array {
         $ch = curl_init();
-
-        curl_setopt_array($ch, [
+        
+        curl_setopt_array($ch, [ // configuración de curl
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST => $method,
-            CURLOPT_HTTPHEADERS => $headers,
+            CURLOPT_HTTPHEADER => $headers,
             CURLOPT_TIMEOUT => 30,
         ]);
 
@@ -81,26 +53,28 @@ class MarketplaceBase {
 
         curl_close($ch);
 
-        return json_decode($response, true) ?? [];
+        return json_decode($response, true) ?? []; // convertir respuesta JSON a array
     }
 
-    protected function log(string $message): void { // simple log
+    protected function log(string $message): void // registrar mensajes de log
+    {
         error_log("[{$this->marketplaceName}] {$message}");
     }
 
-    public function supportListing(): bool { // las otras clases lo sobrescriben si aplica
+    public function supportsListing(): bool // por defecto, no todos tienen lista de productos
+    {
         return false;
     }
 
-    public function listProducts(): array { // solo podría usarse si supportListing = true
+    public function listProducts(): array // solo debe usarse si supportsListing() === true
+    {
         throw new Exception(
             "{$this->marketplaceName} no soporta el listado de productos"
         );
     }
 
-    public function createProduct(array $product): array;
-
-    public function updateProduct(string $id, array $product): array;
-
-    public function deleteProduct(string $id): bool;
+    // métodos que todas las clases de mp deben implementar
+    abstract public function createProduct(array $product): array;
+    abstract public function updateProduct(string $id, array $product): array;
+    abstract public function deleteProduct(string $id): bool;
 }

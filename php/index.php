@@ -1,6 +1,7 @@
 <?php
 require_once "./Router.php";
 require_once "./Ecommerce.php";
+require_once "./MarketplaceBase.php";
 
 $router = new Router();
 
@@ -244,22 +245,44 @@ $router->get('/php/search', function() {
     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 });
 
-$router->get('/shopify/getCustomer', function() {
-    $shopify = new Shopify();
-    $response = $shopify->getCustomer();
-    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-});
+$router->post('/php/createProduct', function(){
 
-$router->post('/shopify/setCustomer', function() {
-    $shopify = new Shopify();
-    $response = $shopify->setCustomer();
-    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-});
+    $session = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+    if (empty($session)) {
+        http_response_code(401);
+        echo $json_encode([
+            "status" => "error",
+            "code" => "ecom-400",
+            "answer" => "Token requerido"
+        ]);
+        return;
+    }
 
-$router->get('/shopify/getProducts', function() {
-    $shopify = new Shopify();
-    $response = $shopify->getProducts();
-    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    $type = $_POST['marketplace'] ?? '';
+    if ($type == '') {
+        http_response_code(402);
+        echo json_encode([
+            "status" => "error",
+            "code" => "ecom-402",
+            "answer" => "Marketplace requerido"
+        ]);
+        return;
+    }
+
+    try {
+        $config = [];
+        $marketplace = MarketplaceFactory::create($type, $config);
+
+        $response = $marketplace->createProduct($_POST);
+        echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo $json_encode([
+            "status" => "error",
+            "code" => "ecom-500",
+            "answer" => $e->getMessage()
+        ]);
+    }
 });
 
 $router->route();
